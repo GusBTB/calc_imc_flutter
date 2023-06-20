@@ -1,10 +1,13 @@
+import 'dart:math';
+
+import 'package:calc_imc_flutter/boxes/boxes.dart';
 import 'package:calc_imc_flutter/models/history.dart';
 import 'package:calc_imc_flutter/models/imc.dart';
+import 'package:calc_imc_flutter/models/imc_hive.dart';
 import 'package:flutter/material.dart';
 
 class Calculate extends StatefulWidget {
-  const Calculate({super.key, required this.his});
-  final HistoryRepository his;
+  const Calculate({super.key});
 
   @override
   State<Calculate> createState() => _CalculateState();
@@ -13,6 +16,7 @@ class Calculate extends StatefulWidget {
 class _CalculateState extends State<Calculate> {
   TextEditingController weigthController = TextEditingController(text: "");
   TextEditingController heightController = TextEditingController(text: "");
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -89,10 +93,23 @@ class _CalculateState extends State<Calculate> {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: Text("Digite o peso e altura para calcular")));
             } else {
-              var imc = Imc(double.parse(weigthController.text),
-                  double.parse(heightController.text.replaceAll(",", ".")));
+              var weight = double.parse(weigthController.text);
+              var height =
+                  double.parse(heightController.text.replaceAll(",", "."));
+
+              var imc = Imc(weight, height);
+
               String result = imc.calculateImc();
-              widget.his.addImc(result);
+
+              Random rand = Random();
+
+              int random = rand.nextInt(1000000);
+
+              boxImc.put(
+                  random, ImcHive(weight: weight, height: height, imc: result));
+
+              // widget.his.addImc(result);
+
               FocusManager.instance.primaryFocus?.unfocus();
               showModalBottomSheet<void>(
                 context: context,

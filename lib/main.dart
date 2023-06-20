@@ -1,7 +1,13 @@
+import 'package:calc_imc_flutter/models/imc_hive.dart';
 import 'package:calc_imc_flutter/pages/home.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'boxes/boxes.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(ImcHiveAdapter());
+  boxImc = await Hive.openBox<ImcHive>('imcBox');
   runApp(const MyApp());
 }
 

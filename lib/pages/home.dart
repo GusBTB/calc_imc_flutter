@@ -42,14 +42,7 @@ class _HomeState extends State<Home> {
                         });
                       },
                       scrollDirection: Axis.horizontal,
-                      children: [
-                        Calculate(
-                          his: his,
-                        ),
-                        History(
-                          his: his,
-                        )
-                      ],
+                      children: const [Calculate(), History()],
                     )),
                     BottomNavigationBar(
                         onTap: (value) {
